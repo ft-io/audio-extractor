@@ -2,6 +2,7 @@ package io.ft.audioextractor;
 
 import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;
+import net.bramp.ffmpeg.FFprobe;
 import net.bramp.ffmpeg.job.FFmpegJob;
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.libfreenect2.Logger;
@@ -10,33 +11,28 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import net.bramp.ffmpeg.builder.FFmpegBuilder;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 @SpringBootTest
 class AudioExtractorApplicationTests {
 
-	private static final String VIDEO = "D:\\test\\test.MOV";
-
-	String ffmpegPath = Loader.load(org.bytedeco.ffmpeg.ffmpeg.class);
+	private static final String VIDEO = "C:\\Users\\07601\\Desktop\\ffmpeg\\IMG_2722.MOV";
 
 	@Test
 	void test() throws IOException {
-//		URL resource = getClass().getClassLoader().getResource(VIDEO);
-//		File vedioFile = new File(resource.getPath());
-//		File audioFile = new File(vedioFile.getPath().replace(".gif", ".mp4"));
+
+		FFmpeg ffmpeg = new FFmpeg("C:\\Users\\07601\\Desktop\\ffmpeg\\bin\\ffmpeg.exe");
+		FFprobe fFprobe = new FFprobe("C:\\Users\\07601\\Desktop\\ffmpeg\\bin\\ffprobe.exe");
 
 		FFmpegBuilder builder = new FFmpegBuilder()
 				.overrideOutputFiles(true)
 //				.addExtraArgs("-ac","2")
 //				.addExtraArgs("-f","MOV")
-//				.setInput(vedioFile.getPath())
-				.setInput("D:/test/test.MOV")
-				.addOutput("D:/test/test.wav")
+				.setInput(VIDEO)
+				.addOutput("C:\\Users\\07601\\Desktop\\ffmpeg\\result.mp3")
 				.done();
 
-		FFmpegExecutor executor = new FFmpegExecutor(new FFmpeg(ffmpegPath));
+		FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, fFprobe);
 
 		try {
 			executor.createJob(builder).run();
