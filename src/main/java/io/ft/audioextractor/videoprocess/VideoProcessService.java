@@ -34,9 +34,9 @@ public class VideoProcessService {
 
         FFmpegBuilder builder = new FFmpegBuilder()
                 .overrideOutputFiles(true)
-//				.addExtraArgs("-ac","2")
-//				.addExtraArgs("-f","MOV")
-                .setInput(VIDEO)
+//				.addExtraArgs("-ac","2") // 오디오 채널 수?
+//				.addExtraArgs("-f","MOV") // 강제 입력 또는 출력 형식. 일반적을 입력은 자동으로 감지, 출력은 파일 확장자로 처리
+                .setInput("https://www.youtube.com/watch?v=km48NEQtw6M")
                 .addOutput("C:\\Users\\07601\\Desktop\\ffmpeg\\result.mp3")
                 .done();
 
