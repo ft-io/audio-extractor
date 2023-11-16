@@ -2,11 +2,11 @@ package io.ft.audioextractor.dto;
 
 import java.util.Map;
 
-public class YoutubeMetaRequestDto {
+public class YoutubeSearchMetaRequestDto {
     public String query;
     public Map context;
 
-    public YoutubeMetaRequestDto(String query, Map context) {
+    public YoutubeSearchMetaRequestDto(String query, Map context) {
         this.query = query;
         this.context = context;
     }
