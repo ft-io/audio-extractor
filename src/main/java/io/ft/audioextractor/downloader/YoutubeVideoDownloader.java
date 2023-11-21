@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import reactor.core.publisher.Flux;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -23,7 +24,7 @@ public class YoutubeVideoDownloader {
     /**
      * [TODO]: env property로 빼기;
      */
-    private final String destination = "";
+    private final String destination = "C:\\Users\\07601\\Desktop\\ffmpeg";
 
     public YoutubeVideoDownloader() {
         DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory();
@@ -31,8 +32,10 @@ public class YoutubeVideoDownloader {
         this.webClient = WebClient.builder().uriBuilderFactory(factory).build();
     }
 
-    public void downloadVideo(YoutubeInfoDto ytInfoDto) {
+    public File downloadVideo(YoutubeInfoDto ytInfoDto) {
         List<YoutubeStreamingDataFormatDto> formats = ytInfoDto.streamingDataFormats();
+        File file = new File(destination + "/" + String.valueOf(System.currentTimeMillis()));
+
         if (formats.size() > 0) {
             // [TODO]: format 소팅하기
             String ytUri = formats.get(0).url();
@@ -40,9 +43,9 @@ public class YoutubeVideoDownloader {
             Flux<DataBuffer> flux = webClient.get().uri(ytUri).retrieve().bodyToFlux(DataBuffer.class);
 
             // [TODO]: mimeType 붙이기
-            Path path = Paths.get(destination + "/" + String.valueOf(System.currentTimeMillis()));
-            DataBufferUtils.write(flux, path)
+            DataBufferUtils.write(flux, file.toPath())
                     .block();
         }
+        return file;
     }
 }
