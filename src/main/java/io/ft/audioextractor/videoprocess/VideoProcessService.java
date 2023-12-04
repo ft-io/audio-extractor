@@ -7,6 +7,7 @@ import net.bramp.ffmpeg.builder.FFmpegBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 
 @Service
@@ -19,7 +20,7 @@ public class VideoProcessService {
     @Value("${ffprobe.path}")
     private String ffprobePath;
 
-    public boolean process() {
+    public boolean process(File uploadVideo) {
 
         FFmpeg ffmpeg = null;
         FFprobe ffprobe = null;
@@ -34,8 +35,8 @@ public class VideoProcessService {
 
         FFmpegBuilder builder = new FFmpegBuilder()
                 .overrideOutputFiles(true)
-                .setInput(VIDEO)
-                .addOutput("C:\\Users\\07601\\Desktop\\ffmpeg\\result.mp3")
+                .setInput(uploadVideo.toPath().toString())
+                .addOutput("/Users/yubyeong-u/test_dir" + "/" + "result.mp3")
                 .done();
 
         FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);

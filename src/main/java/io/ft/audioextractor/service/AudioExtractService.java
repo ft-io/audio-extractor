@@ -31,14 +31,14 @@ public class AudioExtractService {
     public void audioExtract(String url, HttpServletResponse response) throws IOException {
         File videoFile = downloader.download(url);
         logger.info("download finish, fileName:{}", videoFile.getName());
-        videoProcessService.process();
+        videoProcessService.process(videoFile);
         String fileName = "result.mp3";
         logger.info("videoProcessService finish, fileName:{}", fileName);
         response.setContentType(MediaType.MULTIPART_FORM_DATA_VALUE);
         response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(fileName, "UTF-8")+"\";");
         response.setHeader("Content-Transfer-Encofing", "binary");
 
-        byte[] fileByte = FileUtils.readFileToByteArray(new File("C:\\Users\\07601\\Desktop\\ffmpeg\\IMG_2722.MOV"));
+        byte[] fileByte = FileUtils.readFileToByteArray(new File("/Users/yubyeong-u/test_dir" + "/" + "result.mp3"));
         response.getOutputStream().write(fileByte);
         response.getOutputStream().flush();
         response.getOutputStream().close();

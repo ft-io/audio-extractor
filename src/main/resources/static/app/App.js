@@ -30,9 +30,15 @@ class App {
 
         form.setAttribute('method', 'POST');
         form.setAttribute('action', '/api/video/audio-extract');
-        form.setAttribute('url', this.state.search)
-
         document.body.appendChild(form);
+
+        const $input = document.createElement('input');
+        $input.setAttribute('type' , 'hidden');
+        $input.setAttribute('name', 'url');
+        $input.setAttribute('value' , this.state.search);
+
+        form.appendChild($input);
+
         form.submit();
         document.body.removeChild(form);
 

@@ -24,7 +24,7 @@ public class YoutubeVideoDownloader {
     /**
      * [TODO]: env property로 빼기;
      */
-    private final String destination = "C:\\Users\\07601\\Desktop\\ffmpeg";
+    private final String destination = "/Users/yubyeong-u/test_dir";
 
     public YoutubeVideoDownloader() {
         DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory();
@@ -43,7 +43,7 @@ public class YoutubeVideoDownloader {
             Flux<DataBuffer> flux = webClient.get().uri(ytUri).retrieve().bodyToFlux(DataBuffer.class);
 
             // [TODO]: mimeType 붙이기
-            DataBufferUtils.write(flux, file.toPath())
+            DataBufferUtils.write(flux, file.toPath()).share()
                     .block();
         }
         return file;
