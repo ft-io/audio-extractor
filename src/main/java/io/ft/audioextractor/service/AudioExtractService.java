@@ -32,7 +32,7 @@ public class AudioExtractService {
         File videoFile = downloader.download(url);
         logger.info("download finish, fileName:{}", videoFile.getName());
         videoProcessService.process(videoFile);
-        String fileName = "result.mp3";
+        String fileName = String.format("%s.mp3", videoFile.getName());
         logger.info("videoProcessService finish, fileName:{}", fileName);
         response.setContentType(MediaType.MULTIPART_FORM_DATA_VALUE);
         response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(fileName, "UTF-8")+"\";");

@@ -34,7 +34,7 @@ public class YoutubeVideoDownloader {
 
     public File downloadVideo(YoutubeInfoDto ytInfoDto) {
         List<YoutubeStreamingDataFormatDto> formats = ytInfoDto.streamingDataFormats();
-        File file = new File(destination + "/" + String.valueOf(System.currentTimeMillis()));
+        File file = new File(destination + "/" + ytInfoDto.title());
 
         if (formats.size() > 0) {
             // [TODO]: format 소팅하기

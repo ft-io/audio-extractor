@@ -36,7 +36,7 @@ public class VideoProcessService {
         FFmpegBuilder builder = new FFmpegBuilder()
                 .overrideOutputFiles(true)
                 .setInput(uploadVideo.toPath().toString())
-                .addOutput("/Users/yubyeong-u/test_dir" + "/" + "result.mp3")
+                .addOutput(uploadVideo.toPath().toString() + ".mp3")
                 .done();
 
         FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);

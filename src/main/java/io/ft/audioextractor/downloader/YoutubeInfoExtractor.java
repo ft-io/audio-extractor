@@ -38,15 +38,14 @@ public class YoutubeInfoExtractor {
 
         // 일단 디버깅 위해 여기서 예외 캐치
         try {
-            List<YoutubeStreamingDataFormatDto> formats = parseYTPlayerResponse(page);
-            return YoutubeInfoDto.of(formats);
+            return parseYTPlayerResponse(page);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    private List<YoutubeStreamingDataFormatDto> parseYTPlayerResponse (String webpage) throws JsonProcessingException, Exception {
+    private YoutubeInfoDto parseYTPlayerResponse (String webpage) throws JsonProcessingException, Exception {
         Matcher m = _YT_INITIAL_PLAYER_RESPONSE_RE.matcher(webpage);
         if (m.find()) {
             Map<String, Object> playerResponse = objectMapper
@@ -57,7 +56,10 @@ public class YoutubeInfoExtractor {
             Map<String, Object> streamingData = (Map<String, Object>) playerResponse.get("streamingData");
             List<Map<String, Object>> formats = (List<Map<String, Object>>) streamingData.get("formats");
 
-            return formats.stream().map(format -> YoutubeStreamingDataFormatDto.of(
+            Map<String, Object> videoDetails = (Map<String, Object>) playerResponse.get("videoDetails");
+            String title = (String) videoDetails.get("title");
+
+            var streamingDataFormatList = formats.stream().map(format -> YoutubeStreamingDataFormatDto.of(
                     (int)format.get("itag"),
                     (String)format.get("url"),
                     (String)format.get("mimeType"),
@@ -76,6 +78,7 @@ public class YoutubeInfoExtractor {
                     (String)format.get("audioSampleRate"),
                     (int)format.get("audioChannels")
             )).toList();
+            return YoutubeInfoDto.of(title, streamingDataFormatList);
         } else {
             throw new Error("Invalid Youtube Web Page.");
         }

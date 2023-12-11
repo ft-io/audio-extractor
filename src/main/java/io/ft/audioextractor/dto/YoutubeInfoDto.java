@@ -2,8 +2,8 @@ package io.ft.audioextractor.dto;
 
 import java.util.List;
 
-public record YoutubeInfoDto(List<YoutubeStreamingDataFormatDto> streamingDataFormats) {
-    public static YoutubeInfoDto of(List<YoutubeStreamingDataFormatDto> streamingDataFormats) {
-        return new YoutubeInfoDto(streamingDataFormats);
+public record YoutubeInfoDto(String title, List<YoutubeStreamingDataFormatDto> streamingDataFormats) {
+    public static YoutubeInfoDto of(String title, List<YoutubeStreamingDataFormatDto> streamingDataFormats) {
+        return new YoutubeInfoDto(title, streamingDataFormats);
     }
 }
