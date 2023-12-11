@@ -20,6 +20,9 @@ public class VideoProcessService {
     @Value("${ffprobe.path}")
     private String ffprobePath;
 
+    @Value("${temp.path}")
+    private String tempPath;
+
     public boolean process(File uploadVideo) {
 
         FFmpeg ffmpeg = null;
@@ -36,7 +39,7 @@ public class VideoProcessService {
         FFmpegBuilder builder = new FFmpegBuilder()
                 .overrideOutputFiles(true)
                 .setInput(uploadVideo.toPath().toString())
-                .addOutput("/Users/yubyeong-u/test_dir" + "/" + "result.mp3")
+                .addOutput(tempPath + "/result.mp3")
                 .done();
 
         FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);

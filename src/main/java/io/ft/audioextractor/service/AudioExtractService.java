@@ -8,12 +8,11 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLEncoder;
 
 @Service
@@ -22,6 +21,9 @@ public class AudioExtractService {
 
     private final Downloader downloader;
     private final VideoProcessService videoProcessService;
+
+    @Value("${temp.path}")
+    private String tempPath;
 
     @Autowired
     public AudioExtractService(Downloader downloader, VideoProcessService videoProcessService) {
@@ -38,9 +40,17 @@ public class AudioExtractService {
         response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(fileName, "UTF-8")+"\";");
         response.setHeader("Content-Transfer-Encofing", "binary");
 
-        byte[] fileByte = FileUtils.readFileToByteArray(new File("/Users/yubyeong-u/test_dir" + "/" + "result.mp3"));
-        response.getOutputStream().write(fileByte);
-        response.getOutputStream().flush();
-        response.getOutputStream().close();
+        try (
+            FileInputStream fis = new FileInputStream(tempPath + "/result.mp3");
+            OutputStream out = response.getOutputStream();
+        ) {
+            int readCount= 0;
+            byte[] buffer = new byte[1024];
+            while((readCount = fis.read(buffer)) != -1) {
+                out.write(buffer, 0, readCount);
+            }
+        } catch (Exception e) {
+            throw new IOException();
+        }
     }
 }

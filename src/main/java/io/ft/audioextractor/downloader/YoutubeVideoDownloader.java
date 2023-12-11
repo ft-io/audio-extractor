@@ -2,6 +2,7 @@ package io.ft.audioextractor.downloader;
 
 import io.ft.audioextractor.dto.YoutubeInfoDto;
 import io.ft.audioextractor.dto.YoutubeStreamingDataFormatDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,9 @@ public class YoutubeVideoDownloader {
     /**
      * [TODO]: env property로 빼기;
      */
-    private final String destination = "/Users/yubyeong-u/test_dir";
+//    private final String destination = "/Users/yubyeong-u/test_dir";
+    @Value("${temp.path}")
+    private String tempPath;
 
     public YoutubeVideoDownloader() {
         DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory();
@@ -34,7 +37,7 @@ public class YoutubeVideoDownloader {
 
     public File downloadVideo(YoutubeInfoDto ytInfoDto) {
         List<YoutubeStreamingDataFormatDto> formats = ytInfoDto.streamingDataFormats();
-        File file = new File(destination + "/" + String.valueOf(System.currentTimeMillis()));
+        File file = new File(tempPath + "/" + String.valueOf(System.currentTimeMillis()));
 
         if (formats.size() > 0) {
             // [TODO]: format 소팅하기
